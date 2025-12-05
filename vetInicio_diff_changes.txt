@@ -1,0 +1,147 @@
+<li class="nav-item">
+                             <a class="nav-link btn btn-outline-light" href="{% url 'agendar_cita' %}">Cita Médica</a>
+                        </li>
+                    </ul>
+=======
+                    <!-- Removed the Cita Médica navbar link per request -->
+                    <!--
+                    <ul class="navbar-nav me-3">
+                        <li class="nav-item">
+                             <a class="nav-link btn btn-outline-light" href="{% url 'agendar_cita' %}">Cita Médica</a>
+                        </li>
+                    </ul>
+                    -->
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+    <!-- CITA MÉDICA MODAL -->
+    <div class="modal fade" id="citaMedicaModal" tabindex="-1" aria-labelledby="citaMedicaModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="citaMedicaModalLabel">Agendar Cita Médica</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="{% url 'gestionar_citas' %}" novalidate>
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="id_mascota" class="form-label">Nombre de la Mascota</label>
+                {{ formulario_cita.mascota }}
+                {% if formulario_cita.mascota.errors %}
+                <div class="text-danger">{{ formulario_cita.mascota.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_tipo_mascota" class="form-label">Tipo de Mascota</label>
+                {{ formulario_cita.tipo_mascota }}
+                {% if formulario_cita.tipo_mascota.errors %}
+                <div class="text-danger">{{ formulario_cita.tipo_mascota.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_titular" class="form-label">Nombre del Titular</label>
+                {{ formulario_cita.titular }}
+                {% if formulario_cita.titular.errors %}
+                <div class="text-danger">{{ formulario_cita.titular.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_fecha" class="form-label">Fecha</label>
+                {{ formulario_cita.fecha }}
+                {% if formulario_cita.fecha.errors %}
+                <div class="text-danger">{{ formulario_cita.fecha.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_hora" class="form-label">Hora</label>
+                {{ formulario_cita.hora }}
+                {% if formulario_cita.hora.errors %}
+                <div class="text-danger">{{ formulario_cita.hora.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_motivo" class="form-label">Motivo</label>
+                {{ formulario_cita.motivo }}
+                {% if formulario_cita.motivo.errors %}
+                <div class="text-danger">{{ formulario_cita.motivo.errors }}</div>
+                {% endif %}
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Agendar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+=======
+    <!-- Removed cita medica modal -->
+
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+    <!-- HERO SECTION -->
+    <div class="container hero-section">
+        <h1>Bienvenidos a la Veterinaria Pamela</h1>
+        <h4>Ofrecemos el mejor servicio y productos para tus mascotas</h4>
+        <img src="https://lh4.googleusercontent.com/proxy/bribGH4wz8Txy_UxfDaTRdMgjpsah4hWI8b2VFVGjum1tWlKMM2BY6FjpLgt5dY9Snhba1R3xyKYDWEhVp4VrHKijgPnBDMEXD30CTcOamrn2TimJfpRoilqh9mf-sroLA"
+             class="centered-image">
+    </div>
+=======
+    <!-- HERO SECTION -->
+    <div class="container hero-section">
+        <h1>Bienvenidos a la Veterinaria Pamela</h1>
+        <h4>Ofrecemos el mejor servicio y productos para tus mascotas</h4>
+        <img src="https://lh4.googleusercontent.com/proxy/bribGH4wz8Txy_UxfDaTRdMgjpsah4hWI8b2VFVGjum1tWlKMM2BY6FjpLgt5dY9Snhba1R3xyKYDWEhVp4VrHKijgPnBDMEXD30CTcOamrn2TimJfpRoilqh9mf-sroLA"
+             class="centered-image">
+    </div>
+
+    <!-- VISIBLE CITA MÉDICA FORM -->
+    <div class="container cita-form-section">
+        <h2>Agendar Cita Médica</h2>
+        <form method="post" action="{% url 'gestionar_citas' %}" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_mascota" class="form-label">Nombre de la Mascota</label>
+                {{ formulario_cita.mascota }}
+                {% if formulario_cita.mascota.errors %}
+                <div class="text-danger">{{ formulario_cita.mascota.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_tipo_mascota" class="form-label">Tipo de Mascota</label>
+                {{ formulario_cita.tipo_mascota }}
+                {% if formulario_cita.tipo_mascota.errors %}
+                <div class="text-danger">{{ formulario_cita.tipo_mascota.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_titular" class="form-label">Nombre del Titular</label>
+                {{ formulario_cita.titular }}
+                {% if formulario_cita.titular.errors %}
+                <div class="text-danger">{{ formulario_cita.titular.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_fecha" class="form-label">Fecha</label>
+                {{ formulario_cita.fecha }}
+                {% if formulario_cita.fecha.errors %}
+                <div class="text-danger">{{ formulario_cita.fecha.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_hora" class="form-label">Hora</label>
+                {{ formulario_cita.hora }}
+                {% if formulario_cita.hora.errors %}
+                <div class="text-danger">{{ formulario_cita.hora.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_motivo" class="form-label">Motivo</label>
+                {{ formulario_cita.motivo }}
+                {% if formulario_cita.motivo.errors %}
+                <div class="text-danger">{{ formulario_cita.motivo.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Agendar</button>
+        </form>
+    </div>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Carrito • Veterinaria</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        :root{
+            --accent:#20bec6;
+            --accent2:#0aa1af;
+            --light:#f6fafa;
+            --card:#ffffff;
+            --text:#1c2b2e;
+            --muted:#889b9d;
+            --danger:#d9534f;
+            --success:#28a745;
+        }
+
+        body{
+            background: linear-gradient(135deg, #e7f9fb 0%, #fbfefd 100%);
+            font-family: "Poppins", Arial, sans-serif;
+            padding: 30px 16px;
+        }
+
+        .carrito-wrap{
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .carrito-card{
+            background: var(--card);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+            transition: .2s ease;
+            border: 1px solid #e7eff0;
+        }
+
+        .carrito-card:hover{
+            box-shadow: 0 15px 45px rgba(0,0,0,0.09);
+        }
+
+        .page-title{
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--text);
+        }
+
+        .small-muted{
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .item-img{
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border:2px solid #eef4f5;
+        }
+
+        table tbody tr:hover{
+            background: #f2fbfc;
+            transition: .2s;
+        }
+
+        .qty-input{
+            width: 90px;
+            border-radius: 10px;
+            border: 1px solid #d9e6e8;
+        }
+
+        .qty-input:focus{
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(32, 189, 198, 0.25);
+        }
+
+        .total-box{
+            background: linear-gradient(90deg, rgba(32,189,198,0.12), rgba(12,169,112,0.12));
+            border-radius:14px;
+            padding:16px 20px;
+            font-weight:700;
+            color:var(--text);
+            font-size:1.2rem;
+            box-shadow: inset 0 0 14px rgba(0,0,0,0.05);
+        }
+
+        .btn-volver{
+            background: var(--muted);
+            color:white;
+            border:none;
+            border-radius:10px;
+        }
+        .btn-volver:hover{
+            background:#748b8d;
+        }
+
+        .btn-empty{
+            background:#ffffff;
+            border:1px solid #c9d6d7;
+            color:#4a5c5d;
+            border-radius:10px;
+        }
+        .btn-empty:hover{
+            background:#eef4f5;
+        }
+
+        .btn-comprar{
+            background: var(--accent);
+            color:white;
+            border:none;
+            border-radius:10px;
+            padding:8px 16px;
+            font-weight:600;
+        }
+        .btn-comprar:hover{
+            background: var(--accent2);
+            color:white;
+        }
+
+        .btn-outline-danger{
+            border-radius:10px;
+        }
+
+        @media (max-width:767px){
+            .item-img{ width:70px; height:70px; }
+            .qty-input{ width:70px; }
+            .page-title{ font-size:1.6rem; }
+        }
+
+        form.inline-form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    
+<div class="carrito-wrap">
+
+    <!-- ENCABEZADO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title">🛒 Mi Carrito</h1>
+            <div class="small-muted">Productos agregados a tu compra</div>
+        </div>
+
+        <div>
+            <a href="{{ volver }}" class="btn btn-primary me-2">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+            <a href="{% url 'vet_inicio' %}" class="btn btn-empty">
+                <i class="bi bi-house-door"></i> Inicio
+            </a>
+        </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="carrito-card">
+        {% if carrito %}
+        <form method="post" action="{% url 'actualizar_carrito' %}">
+            {% csrf_token %}
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for key, item in carrito.items %}
+                    <tr class="text-center">
+                        <td>
+                            {% if item.imagen %}
+                                <img src="{{ item.imagen }}" class="item-img" alt="{{ item.nombre }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/85" class="item-img">
+                            {% endif %}
+                        </td>
+
+                        <td class="fw-semibold">{{ item.nombre }}</td>
+                        <td class="text-success fw-bold">${{ item.precio|floatformat:2 }}</td>
+
+                        <td>
+                            <input type="number" min="1" name="cantidad_{{ key }}"
+                                   value="{{ item.cantidad }}"
+                                   class="form-control qty-input mx-auto">
+                        </td>
+
+                        <td class="fw-bold">${{ item.subtotal|floatformat:2 }}</td>
+
+                        <td>
+                            <form method="post"
+                                  action="{% url 'eliminar_carrito' tipo=item.tipo producto_id=item.id %}"
+                                  class="inline-form"
+                                  onsubmit="return confirm('¿Eliminar este producto?');">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TOTAL -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-3">
+
+                <div class="small-muted w-100">
+                    Puedes ajustar cantidades o eliminar productos.
+                </div>
+
+                <div class="text-end w-100 w-md-auto">
+                    <div class="total-box mb-3">
+                        Total: ${{ total|floatformat:2 }}
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-end">
+                        <button type="submit" class="btn btn-comprar">
+                            <i class="bi bi-arrow-repeat"></i> Actualizar
+                        </button>
+
+                        <a href="{% url 'ver_carrito' %}?clear=1"
+                           onclick="return confirm('¿Vaciar carrito completo?');"
+                           class="btn btn-outline-danger">
+                            <i class="bi bi-trash3"></i> Vaciar
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+        {% else %}
+        <div class="text-center py-5">
+            <h5 class="text-muted mb-2">Tu carrito está vacío</h5>
+            <a href="{{ volver }}" class="btn btn-success px-4">Seguir comprando</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo – Accesorios</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffb6c1, #8a2be2);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* ENCABEZADO */
+        .page-header {
+            background: white;
+            padding: 25px 35px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+            margin-top: 30px;
+        }
+
+        .logo-vet {
+            height: 85px;
+            margin-right: 18px;
+            border-radius: 15px;
+            border: 4px solid #d4a5ff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .title-text {
+            font-size: 30px;
+            font-weight: 900;
+            color: #5a1d9e;
+        }
+
+        .btn-home {
+            background: #d63384;
+            color: white;
+            font-weight: bold;
+            padding: 12px 22px;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover {
+            background: #a51755;
+            transform: translateY(-3px);
+        }
+
+        /* TARJETAS */
+        .category-card {
+            background: white;
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        /* Colores personalizados */
+        .cat-collares { border-color: #ff8c94; }
+        .cat-camas { border-color: #9ec1ff; }
+        .cat-juguetes { border-color: #d4a5ff; }
+
+        .category-title {
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        /* TABLAS */
+        .table-section {
+            display: none;
+            background: white;
+            padding: 28px;
+            border-radius: 22px;
+            margin-top: 45px;
+            box-shadow: 0 6px 28px rgba(0,0,0,0.1);
+            border-left: 6px solid #d63384;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* BOTÓN TOP */
+        #btnTop {
+            display: none;
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 15px 17px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.25);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ENCABEZADO -->
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img src="https://img.freepik.com/vector-gratis/conjunto-accesorios-perros-o-productos-iconos-tienda-mascotas-collar-bolas-juguetes-alimentacion-ilustracion-vectorial_1150-65770.jpg"
+                 class="logo-vet">
+            <h2 class="title-text mb-0">Catálogo de Accesorios – Veterinaria</h2>
+        </div>
+
+        <a href="{% url 'home' %}" class="btn-home shadow-sm">
+            <i class="bi bi-house-heart"></i> Volver al Inicio
+        </a>
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <div class="row mt-5 g-4 justify-content-center">
+
+        <!-- Collares -->
+        <div class="col-md-4 col-sm-6">
+            <div class="category-card cat-collares" onclick="mostrarTabla('collares')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs8OLq_18rcfFPC1bxHgyWgmkGzIpTtTglBA&s"
+                     style="width:100px; height:100px;">
+                <p class="category-title">Collares y Correas</p>
+            </div>
+        </div>
+
+        <!-- Camas -->
+        <div class="col-md-4 col-sm-6">
+            <div class="category-card cat-camas" onclick="mostrarTabla('camas')">
+                <img src="https://s.alicdn.com/@sc04/kf/H114ea32eca09494eb76c8044cd8d24ac6/Wholesale-Custom-Breathable-Dog-Sofa-Bed-Dual-Use-Double-Sided-Pet-Beds-Accessories-Dog-Nest-Large-Rectangle-Pet-Cat-Beds.jpg_300x300.jpg"
+                     style="width:100px; height:100px;">
+                <p class="category-title">Camas</p>
+            </div>
+        </div>
+
+        <!-- Juguetes -->
+        <div class="col-md-4 col-sm-6">
+            <div class="category-card cat-juguetes" onclick="mostrarTabla('juguetes')">
+                <img src="https://www.shutterstock.com/image-vector/dog-toys-stickers-cartoon-cute-600nw-2642614607.jpg"
+                     style="width:100px; height:100px;">
+                <p class="category-title">Juguetes</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLA COLLARES -->
+    <div id="tabla-collares" class="table-section">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>📿 Collares y Correas</h3>
+            <a href="{% url 'collares_registro' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Crear Accesorio
+            </a>
+        </div>
+        <table id="dt-collares" class="display" style="width:100%"></table>
+    </div>
+
+    <!-- TABLA CAMAS -->
+    <div id="tabla-camas" class="table-section">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>🛏️ Camas</h3>
+            <a href="{% url 'camas_registro' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Crear Accesorio
+            </a>
+        </div>
+        <table id="dt-camas" class="display" style="width:100%"></table>
+    </div>
+
+    <!-- TABLA JUGUETES -->
+    <div id="tabla-juguetes" class="table-section">
+        <div class="d-flex justify-content-between mb-3">
+            <h3>🧸 Juguetes</h3>
+            <a href="{% url 'juguetes_registro' %}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Crear Accesorio
+            </a>
+        </div>
+        <table id="dt-juguetes" class="display" style="width:100%"></table>
+    </div>
+
+</div>
+
+<!-- BOTÓN TOP -->
+<button id="btnTop" onclick="scrollToTop()">⬆</button>
+
+<script>
+    function cargarTabla(id, urlApi, editUrl, deleteUrl) {
+        $('#' + id).DataTable({
+            ajax: urlApi,
+            destroy: true,
+            columns: [
+                { data: "codigo", title: "Código" },
+                { data: "nombre", title: "Nombre" },
+                { data: "marca",  title: "Marca" },
+                { data: "stock",  title: "Stock" },
+                { data: "precio", title: "Precio" },
+                {
+                    data: "codigo",
+                    title: "Acciones",
+                    orderable: false,
+                    render: function(codigo) {
+                        return `
+                            <a href="${editUrl}${codigo}/" class="btn btn-warning btn-sm me-2">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="${deleteUrl}${codigo}/" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
+                                <i class="bi bi-trash"></i>
+                            </a>`;
+                    }
+                }
+            ]
+        });
+    }
+
+    $(document).ready(function () {
+        cargarTabla("dt-collares", "{% url 'api_collares' %}", "/editar/collar/", "/eliminar/collar/");
+        cargarTabla("dt-camas", "{% url 'api_camas' %}", "/editar/cama/", "/eliminar/cama/");
+        cargarTabla("dt-juguetes", "{% url 'api_juguetes' %}", "/editar/juguete/", "/eliminar/juguete/");
+    });
+
+    function mostrarTabla(categoria) {
+        $(".table-section").hide();
+        $("#tabla-" + categoria).fadeIn();
+        $('html, body').animate({ scrollTop: $("#tabla-" + categoria).offset().top - 30 }, 500);
+        document.getElementById("btnTop").style.display = "block";
+    }
+
+    function scrollToTop() {
+        $('html, body').animate({ scrollTop: 0 }, 600);
+    }
+</script>
+
+</body>
+</html>

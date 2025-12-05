@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 700px;
+            margin: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-weight: 700;
+            color: #1d3f50;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .btn-info {
+            background-color: #1ed1da;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-info:hover {
+            background-color: #17b7c0;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="form-container">
+            <h1 class="form-title">Registrar Alimento Perro Senior</h1>
+            <p class="form-subtitle">Complete los campos para registrar un nuevo producto</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Nombre -->
+                <div class="mb-3">
+                    <label for="id_nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="id_nombre" name="nombre" placeholder="Ingrese nombre">
+                </div>
+
+                <!-- Marca -->
+                <div class="mb-3">
+                    <label for="id_marca" class="form-label">Marca</label>
+                    <input type="text" class="form-control" id="id_marca" name="marca" placeholder="Ingrese marca">
+                </div>
+
+                <!-- Precio -->
+                <div class="mb-3">
+                    <label for="id_precio" class="form-label">Precio</label>
+                    <input type="number" class="form-control" id="id_precio" name="precio" placeholder="Ingrese precio">
+                </div>
+
+                <!-- Stock -->
+                <div class="mb-3">
+                    <label for="id_stock" class="form-label">Stock</label>
+                    <input type="number" class="form-control" id="id_stock" name="stock" placeholder="Ingrese stock">
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-3">
+                    <label for="id_descripcion" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="id_descripcion" name="descripcion" rows="3" placeholder="Ingrese descripción"></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'datatable' %}" class="btn btn-primary">Volver</a>
+                    <input type="submit" value="Registrar" class="btn btn-info">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

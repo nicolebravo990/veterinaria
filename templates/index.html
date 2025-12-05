@@ -1,0 +1,438 @@
+{% extends 'base/base.html' %}
+
+{% block sidebar %}
+{% endblock %}
+
+{% block titulo %}
+    Dashboard Administrativo
+{% endblock %}
+
+{% block contenido %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            </div>
+
+            <!-- Catalog Links -->
+            <div class="row mb-4">
+                <div class="col-lg-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Catálogos de Productos</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <a href="{% url 'datatable' %}" class="btn btn-primary btn-block">
+                                        <i class="fas fa-dog"></i> Catálogo para Perros
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="{% url 'datatable2' %}" class="btn btn-success btn-block">
+                                        <i class="fas fa-cat"></i> Catálogo para Gatos
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="{% url 'datatable3' %}" class="btn btn-warning btn-block">
+                                        <i class="fas fa-pills"></i> Catálogo para Medicamentos
+                                    </a>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <a href="{% url 'datatable4' %}" class="btn btn-info btn-block">
+                                        <i class="fas fa-toys"></i> Catálogo de Accesorios
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+
+                <!-- Total Productos Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Total Productos</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_productos }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-box fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Stock Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Total Stock</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_stock }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-warehouse fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valor Inventario Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Valor Inventario</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${{ valor_inventario|floatformat:2 }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Productos Recientes Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Productos Recientes</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ productos_recientes|length }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-clock fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Distribución de Productos por Categoría</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-area">
+                                <canvas id="myAreaChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pie Chart -->
+                <div class="col-xl-4 col-lg-5">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Categorías</h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="myPieChart"></canvas>
+                            </div>
+                            <div class="mt-4 text-center small">
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-primary"></i> Alimentos Perro
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-success"></i> Alimentos Gato
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-info"></i> Snacks
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-warning"></i> Medicamentos
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-danger"></i> Accesorios
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fas fa-circle text-secondary"></i> Otros
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+                <!-- Productos Recientes -->
+                <div class="col-lg-12 mb-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Productos Recientes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Stock</th>
+                                            <th>Categoría</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for producto in productos_recientes %}
+                                            <tr>
+                                                <td>{{ producto.nombre }}</td>
+                                                <td>${{ producto.precio|floatformat:2 }}</td>
+                                                <td>{{ producto.stock }}</td>
+                                                <td>{{ producto.category }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        {% else %}
+            <style>
+                .hero-section {
+                    text-align: center;
+                    margin-bottom: 3rem;
+                }
+
+                .centered-image {
+                    display: block;
+                    margin: 2rem auto;
+                    max-width: 100%;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                }
+
+                .feature-box {
+                    background-color: #ffffff;
+                    border-radius: 10px;
+                    padding: 1.5rem;
+                    margin: 1rem 0;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    text-align: center;
+                }
+
+                .feature-box i {
+                    font-size: 1.8rem;
+                    color: #1ed1da;
+                    margin-top: 0.5rem;
+                }
+
+                .section-title {
+                    text-align: center;
+                    margin: 3rem 0 2rem;
+                }
+
+                .category-card {
+                    background-color: #fff;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    margin-bottom: 2rem;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    transition: transform 0.2s ease;
+                }
+
+                .category-card:hover {
+                    transform: scale(1.03);
+                }
+
+                .category-card img {
+                    width: 100%;
+                    height: 220px;
+                    object-fit: cover;
+                }
+
+                .category-card h4 {
+                    padding: 1rem 0;
+                }
+            </style>
+
+            <!-- HERO SECTION -->
+            <div class="hero-section">
+                <h1>Bienvenidos a la Veterinaria Pamela</h1>
+                <h4>Ofrecemos el mejor servicio y productos para tus mascotas</h4>
+                <img src="https://lh4.googleusercontent.com/proxy/bribGH4wz8JTx_UxfDaTRdMgjpsah4hWI8b2VFVGjum1tWlKMM2BY6FjpLgt5dY9Snhba1R3xyKYDWEhVp4VrHKijgPnBDMEXD30CTcOamrn2TimJfpRoilqh9mf-sroLA"
+                     class="centered-image">
+            </div>
+
+            <!-- BENEFICIOS -->
+            <div class="row text-center mb-5">
+                <div class="col-md-3"><div class="feature-box"><h3>Calidad</h3><p>Productos de alta calidad</p><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div></div>
+                <div class="col-md-3"><div class="feature-box"><h3>Pago Seguro</h3><p>Paga sin riesgos</p><i class="fas fa-lock"></i></div></div>
+                <div class="col-md-3"><div class="feature-box"><h3>Garantía</h3><p>Productos con garantía</p><i class="fas fa-check-circle"></i></div></div>
+                <div class="col-md-3"><div class="feature-box"><h3>Precios Bajos</h3><p>Los mejores precios del mercado</p><i class="fas fa-dollar-sign"></i></div></div>
+            </div>
+
+            <!-- CATEGORÍAS -->
+            <h2 class="section-title">Categorías Destacadas</h2>
+            <div class="row">
+                <div class="col-md-4"><a href="{% url 'datatable3' %}"><div class="category-card"><img src="https://www.provefarma.cl/wp-content/uploads/2025/09/bod-mob.png"><h4 class="text-center">Medicamentos</h4></div></a></div>
+                <div class="col-md-4"><a href="{% url 'datatable' %}"><div class="category-card"><img src="https://i.ytimg.com/vi/1aVMNFsksM8/maxresdefault.jpg"><h4 class="text-center">Alimento</h4></div></a></div>
+                <div class="col-md-4"><a href="{% url 'datatable4' %}"><div class="category-card"><img src="https://m.media-amazon.com/images/I/818JSdy52gL._AC_UF894,1000_QL80_.jpg"><h4 class="text-center">Juguetes para mascotas</h4></div></a></div>
+            </div>
+        {% endif %}
+    {% else %}
+        <h1>No estás autenticado. Por favor, inicia sesión.</h1>
+        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if user.is_superuser %}
+<script id="categorias-data" type="application/json">{{ categorias_count|json_script:"categorias-data" }}</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+var categoriasData = JSON.parse(document.getElementById('categorias-data').textContent);
+// Pie Chart Example
+var ctx = document.getElementById("myPieChart");
+var myPieChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: {
+    labels: ["Alimentos Perro", "Alimentos Gato", "Snacks", "Medicamentos", "Accesorios", "Otros"],
+    datasets: [{
+      data: Object.values(categoriasData),
+      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#858796'],
+      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#f4b619', '#e02d1b', '#6c757d'],
+      hoverBorderColor: "rgba(234, 236, 244, 1)",
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        padding: 15,
+        displayColors: false,
+        caretPadding: 10,
+      },
+      legend: {
+        display: false
+      }
+    },
+    cutout: '80%',
+  },
+});
+
+// Area Chart Example
+var ctx = document.getElementById("myAreaChart");
+var myAreaChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["Alimentos Perro", "Alimentos Gato", "Snacks", "Medicamentos", "Accesorios", "Otros"],
+    datasets: [{
+      label: "Cantidad",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 3,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: Object.values(categoriasData),
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      },
+      y: {
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10,
+          callback: function(value, index, values) {
+            return number_format(value);
+          }
+        },
+        grid: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      },
+    },
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyColor: "#858796",
+        titleMarginBottom: 10,
+        titleColor: '#6e707e',
+        titleFontSize: 14,
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        padding: 15,
+        displayColors: false,
+        intersect: false,
+        mode: 'index',
+        caretPadding: 10,
+        callbacks: {
+          label: function(tooltipItem) {
+            var datasetLabel = tooltipItem.dataset.label || '';
+            return datasetLabel + ': ' + number_format(tooltipItem.parsed.y);
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+{% endif %}
+{% endblock %}
